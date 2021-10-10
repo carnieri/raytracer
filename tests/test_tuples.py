@@ -1,6 +1,10 @@
 from raytracer.tuple import tuple, point, vector, magnitude, normalize, dot, cross, color
 from raytracer.util import equal 
 
+def test_tuple_to_list():
+    a = tuple(4.3, -4.2, 3.1, 1.0)
+    assert a.to_list() == [4.3, -4.2, 3.1, 1.0]
+
 def test_a_tuple_with_w_equal_1_is_a_point():
     a = tuple(4.3, -4.2, 3.1, 1.0)
     assert a.x == 4.3

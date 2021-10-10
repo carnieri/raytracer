@@ -16,6 +16,9 @@ class tuple:
     def is_vector(self):
         return util.equal(self.w, 0.0)
 
+    def to_list(self):
+        return [self.x, self.y, self.z, self.w]
+
     def __eq__(self, other):
         return (
             util.equal(self.x, other.x)
