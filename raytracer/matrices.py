@@ -67,5 +67,80 @@ class Matrix:
                 for j in range(self.cols()):
                     result_lst[i] += self[i,j] * tuple_vals[j]
             return tuple(*result_lst)
+        elif isinstance(other, Matrix):
+            return self @ other
         else:
             raise Exception("case not implemented")
+
+    def transpose(self):
+        T = self.copy()
+        for i in range(self.rows()):
+            for j in range(self.cols()):
+                T[i,j] = self[j,i]
+        return T
+
+    def determinant(self):
+        # determinant is only defined for square matrices
+        assert self.rows() == self.cols()
+        if self.rows() == 2:
+            a,b = self[0,0], self[0,1]
+            c,d = self[1,0], self[1,1]
+            return a*d - b*c
+        else:
+            # we arbitrarily pick the first row, but any row would do
+            i = 0
+            det = 0
+            for j in range(self.cols()):
+                det += self[i,j] * self.cofactor(i,j)
+            return det
+
+    def size(self):
+        return self.rows(), self.cols()
+
+    def submatrix(self, i, j):
+        S = self.copy()
+        # for every row, delete column j
+        for r in range(S.rows()):
+            del S.data[r][j]
+        # delete row i
+        del S.data[i]
+        return S
+
+    def minor(self, i, j):
+        S = self.submatrix(i, j)
+        return S.determinant()
+
+    def cofactor(self, i, j):
+        if (i + j) % 2 == 0:
+            sign = 1
+        else:
+            sign = -1
+        return self.minor(i,j) * sign
+
+    def invertible(self):
+        det = self.determinant()
+        if det == 0:
+            # TODO: maybe for stability the equality test needs to be: equal(det, 0)
+            return False
+        else:
+            return True
+
+    def inverse(self):
+        assert self.invertible()
+        det = self.determinant()
+        M2 = self.copy()
+        for i in range(self.rows()):
+            for j in range(self.cols()):
+                c = self.cofactor(i, j)
+                M2[j,i] = c / det
+        return M2
+
+
+def identity(size):
+    data = [[0 for col in range(size)] for row in range(size)]
+    M = Matrix(data)
+    for i in range(size):
+        M[i,i] = 1
+    return M
+
+I = identity(4)
