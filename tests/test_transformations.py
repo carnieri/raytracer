@@ -97,3 +97,26 @@ def test_a_shearing_transformation_moves_z_in_proportion_to_y():
     transform = shearing(0, 0, 0, 0, 0, 1)
     p = point(2, 3, 4)
     assert transform * p == point(2, 3, 7)
+
+def test_individual_transformations_are_applied_in_sequence():
+    p = point(1, 0, 1)
+    A = rotation_x(pi / 2)
+    B = scaling(5, 5, 5)
+    C = translation(10, 5, 7)
+    # apply rotation first
+    p2 = A * p
+    assert p2 == point(1, -1, 0)
+    # then apply scaling
+    p3 = B * p2
+    assert p3 == point(5, -5, 0)
+    # then apply translation
+    p4 = C * p3
+    assert p4 == point(15, 0, 7)
+
+def test_chained_transformations_must_be_applied_in_reverse_order():
+    p = point(1, 0, 1)
+    A = rotation_x(pi / 2)
+    B = scaling(5, 5, 5)
+    C = translation(10, 5, 7)
+    T = C @ B @ A
+    assert T * p == point(15, 0, 7)

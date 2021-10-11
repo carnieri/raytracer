@@ -1,17 +1,6 @@
 from math import cos, sin
 
-from raytracer.tuple import (
-    tuple,
-    point,
-    vector,
-    magnitude,
-    normalize,
-    dot,
-    cross,
-    color,
-)
-from raytracer.util import equal
-from raytracer.matrices import Matrix, I
+from raytracer.matrices import Matrix
 
 def translation(x, y, z):
     return Matrix(
