@@ -30,3 +30,7 @@ class Sphere:
     def __init__(self):
         # generate a unique id for this sphere
         self.id = next(self.id_iter)
+        self.transform = I
+
+    def set_transform(self, transform):
+        self.transform = transform

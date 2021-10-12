@@ -28,3 +28,6 @@ class Ray:
 
     def position(self, t):
         return self.origin + self.direction * t
+
+    def transform(self, mat):
+        return Ray(mat * self.origin, mat * self.direction)

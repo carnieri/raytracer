@@ -63,3 +63,13 @@ def test_a_sphere_is_behind_a_ray():
     assert len(xs) == 2
     assert equal(xs[0].t, -6.0)
     assert equal(xs[1].t, -4.0)
+
+def test_a_spheres_default_transformation():
+    s = Sphere()
+    assert s.transform == I
+
+def test_changing_a_spheres_transformation():
+    s = Sphere()
+    t = translation(2, 3, 4)
+    s.set_transform(t)
+    assert s.transform == t

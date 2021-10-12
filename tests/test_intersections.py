@@ -81,3 +81,20 @@ def test_the_hit_is_always_the_lowest_nonnegative_intersection():
     xs = intersections(i1, i2, i3, i4)
     i = hit(xs)
     assert i == i4
+
+def test_intersecting_a_scaled_sphere_with_a_ray():
+    r = Ray(point(0, 0, -5), vector(0, 0, 1))
+    s = Sphere()
+    s.set_transform(scaling(2, 2, 2))
+    xs = intersect(s, r)
+    assert len(xs) == 2
+    assert equal(xs[0].t, 3)
+    assert equal(xs[1].t, 7)
+
+def test_intersecting_a_translated_sphere_with_a_ray():
+    r = Ray(point(0, 0, -5), vector(0, 0, 1))
+    s = Sphere()
+    s.set_transform(translation(5, 0, 0))
+    xs = intersect(s, r)
+    assert len(xs) == 0
+    

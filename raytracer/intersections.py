@@ -39,9 +39,10 @@ def intersections(*args: Intersection) -> List[Intersection]:
 def intersect(s: Sphere, r: Ray) -> List[Intersection]:
     # The vector from the sphere's center to the ray origin
     # Remember: the sphere is centered at the world origin
-    sphere_to_ray = r.origin - point(0, 0, 0)
-    a = dot(r.direction, r.direction)
-    b = 2 * dot(r.direction, sphere_to_ray)
+    r2 = r.transform(s.transform.inverse())
+    sphere_to_ray = r2.origin - point(0, 0, 0)
+    a = dot(r2.direction, r2.direction)
+    b = 2 * dot(r2.direction, sphere_to_ray)
     c = dot(sphere_to_ray, sphere_to_ray) - 1
     discriminant = b*b - 4*a*c
     if discriminant < 0:
