@@ -8,7 +8,7 @@ from raytracer.tuple import (
     normalize,
     dot,
     cross,
-    color,
+    Color,
 )
 from raytracer.canvas import canvas
 from raytracer.util import equal
@@ -32,7 +32,7 @@ c = canvas(canvas_size, canvas_size)
 canvas_x_center = canvas_size // 2
 canvas_y_center= canvas_size // 2
 clock_radius = 3 * canvas_size / 8
-mycolor = color(127, 127, 0)
+mycolor = Color(127, 127, 0)
 for hour in hours:
     x = round(hour.x * clock_radius)
     y = round(hour.z * clock_radius)

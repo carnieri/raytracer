@@ -10,7 +10,7 @@ from raytracer.tuple import (
     normalize,
     dot,
     cross,
-    color,
+    Color,
 )
 from raytracer.util import equal
 from raytracer.matrices import Matrix, I

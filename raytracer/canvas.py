@@ -1,4 +1,4 @@
-from raytracer.tuple import color
+from raytracer.tuple import Color
 
 
 def convert_range(p):
@@ -10,7 +10,7 @@ class canvas:
     def __init__(self, width, height):
         self.width = width
         self.height = height
-        self.data = [[color(0, 0, 0) for x in range(width)] for y in range(height)]
+        self.data = [[Color(0, 0, 0) for x in range(width)] for y in range(height)]
 
     def pixel_at(self, x, y):
         return self.data[y][x]

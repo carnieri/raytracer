@@ -7,7 +7,7 @@ from raytracer.tuple import (
     normalize,
     dot,
     cross,
-    color,
+    Color,
 )
 from raytracer.util import equal
 
@@ -18,12 +18,12 @@ def test_creating_a_canvas():
     assert c.height == 20
     for y in range(c.height):
         for x in range(c.width):
-            assert c.pixel_at(x, y) == color(0, 0, 0)
+            assert c.pixel_at(x, y) == Color(0, 0, 0)
 
 
 def test_writing_pixels_to_a_canvas():
     c = canvas(10, 20)
-    red = color(1, 0, 0)
+    red = Color(1, 0, 0)
     c.write_pixel(2, 3, red)
     assert c.pixel_at(2, 3) == red
 
@@ -39,9 +39,9 @@ def test_constructing_the_PPM_header():
 
 def test_constructing_the_PPM_pixel_data():
     c = canvas(5, 3)
-    c1 = color(1.5, 0, 0)
-    c2 = color(0, 0.5, 0)
-    c3 = color(-0.5, 0, 1)
+    c1 = Color(1.5, 0, 0)
+    c2 = Color(0, 0.5, 0)
+    c3 = Color(-0.5, 0, 1)
     c.write_pixel(0, 0, c1)
     c.write_pixel(2, 1, c2)
     c.write_pixel(4, 2, c3)

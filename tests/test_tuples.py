@@ -1,4 +1,4 @@
-from raytracer.tuple import tuple, point, vector, magnitude, normalize, dot, cross, color
+from raytracer.tuple import tuple, point, vector, magnitude, normalize, dot, cross, Color
 from raytracer.util import equal 
 
 def test_tuple_to_list():
@@ -87,26 +87,26 @@ def test_cross_product_of_two_vectors():
     assert cross(b, a) == vector(1, -2, 1)
 
 def test_colors_are_red_green_blue_tuples():
-    c = color(-0.5, 0.4, 1.7)
+    c = Color(-0.5, 0.4, 1.7)
     assert equal(c.r, -0.5)
     assert equal(c.g, 0.4)
     assert equal(c.b, 1.7)
 
 def test_adding_colors():
-    c1 = color(0.9, 0.6, 0.75)
-    c2 = color(0.7, 0.1, 0.25)
-    assert c1 + c2 == color(1.6, 0.7, 1.0)
+    c1 = Color(0.9, 0.6, 0.75)
+    c2 = Color(0.7, 0.1, 0.25)
+    assert c1 + c2 == Color(1.6, 0.7, 1.0)
 
 def test_subtracting_colors():
-    c1 = color(0.9, 0.6, 0.75)
-    c2 = color(0.7, 0.1, 0.25)
-    assert c1 - c2 == color(0.2, 0.5, 0.5)
+    c1 = Color(0.9, 0.6, 0.75)
+    c2 = Color(0.7, 0.1, 0.25)
+    assert c1 - c2 == Color(0.2, 0.5, 0.5)
 
 def test_multiplying_a_color_by_a_scalar():
-    c = color(0.2, 0.3, 0.4)
-    assert c * 2 == color(0.4, 0.6, 0.8)
+    c = Color(0.2, 0.3, 0.4)
+    assert c * 2 == Color(0.4, 0.6, 0.8)
 
 def test_multiplying_colors():
-    c1 = color(1, 0.2, 0.4)
-    c2 = color(0.9, 1, 0.1)
-    assert c1 * c2 == color(0.9, 0.2, 0.04)
+    c1 = Color(1, 0.2, 0.4)
+    c2 = Color(0.9, 1, 0.1)
+    assert c1 * c2 == Color(0.9, 0.2, 0.04)

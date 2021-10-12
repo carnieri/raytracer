@@ -9,7 +9,7 @@ from raytracer.tuple import (
     normalize,
     dot,
     cross,
-    color,
+    Color,
 )
 from raytracer.util import equal
 from raytracer.matrices import Matrix, I
@@ -97,4 +97,3 @@ def test_intersecting_a_translated_sphere_with_a_ray():
     s.set_transform(translation(5, 0, 0))
     xs = intersect(s, r)
     assert len(xs) == 0
-    

@@ -116,7 +116,7 @@ def cross(a, b):
     )
 
 @dataclass
-class color:
+class Color:
     r: float
     g: float
     b: float
@@ -129,14 +129,14 @@ class color:
         )
 
     def __add__(self, other):
-        return color(
+        return Color(
             self.r + other.r,
             self.g + other.g,
             self.b + other.b,
         )
 
     def __sub__(self, other):
-        return color(
+        return Color(
             self.r - other.r,
             self.g - other.g,
             self.b - other.b,
@@ -145,14 +145,14 @@ class color:
     def __mul__(self, other):
         if isinstance(other, (float,int)):
             scalar = other
-            return color(
+            return Color(
                 self.r * scalar,
                 self.g * scalar,
                 self.b * scalar,
             )
         else:
             # Hadamard product
-            return color(
+            return Color(
                 self.r * other.r,
                 self.g * other.g,
                 self.b * other.b,

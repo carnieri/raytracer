@@ -5,7 +5,7 @@ from raytracer.tuple import (
     point,
     vector,
     normalize,
-    color,
+    Color,
 )
 from raytracer.canvas import canvas
 
@@ -45,7 +45,7 @@ while p.position.y > 0:
     y = int(c.height - p.position.y)
     x = int(p.position.x)
     if x >= 0 and x < c.width and y >= 0 and y < c.height:
-        mycolor = color(127, 0, 0)
+        mycolor = Color(127, 0, 0)
         c.write_pixel(x, y, mycolor)
     p = tick(e, p)
     i += 1
