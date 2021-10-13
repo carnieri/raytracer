@@ -1,4 +1,16 @@
-from raytracer.tuple import tuple, point, vector, magnitude, normalize, dot, cross, Color
+from math import pi, sqrt
+
+from raytracer.tuple import (
+    tuple,
+    point,
+    vector,
+    magnitude,
+    normalize,
+    dot,
+    cross,
+    reflect,
+    Color,
+)
 from raytracer.util import equal 
 
 def test_tuple_to_list():
@@ -110,3 +122,15 @@ def test_multiplying_colors():
     c1 = Color(1, 0.2, 0.4)
     c2 = Color(0.9, 1, 0.1)
     assert c1 * c2 == Color(0.9, 0.2, 0.04)
+
+def test_reflecting_a_vector_approaching_at_45_degrees():
+    v = vector(1, -1, 0)
+    n = vector(0, 1, 0)
+    r = reflect(v, n)
+    assert r == vector(1, 1, 0)
+
+def test_reflecting_a_vector_off_a_slanted_surface():
+    v = vector(0, -1, 0)
+    n = vector(sqrt(2)/2, sqrt(2)/2, 0)
+    r = reflect(v, n)
+    assert r == vector(1, 0, 0)

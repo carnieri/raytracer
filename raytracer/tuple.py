@@ -90,13 +90,13 @@ def point(x, y, z):
 def vector(x, y, z):
     return tuple(x, y, z, 0.0)
 
-def magnitude(v):
+def magnitude(v: tuple) -> float:
     return v.magnitude()
 
-def normalize(v):
+def normalize(v: tuple) -> tuple:
     return v.normalize()
 
-def dot(a, b):
+def dot(a: tuple, b: tuple) -> tuple:
     """The dot product of two vectors."""
     assert a.is_vector() and b.is_vector()
     return (
@@ -106,7 +106,7 @@ def dot(a, b):
         a.w * b.w
     )
 
-def cross(a, b):
+def cross(a: tuple, b: tuple) -> tuple:
     """The cross product of two vectors."""
     assert a.is_vector() and b.is_vector()
     return vector(
@@ -114,6 +114,10 @@ def cross(a, b):
         a.z * b.x - a.x * b.z,
         a.x * b.y - a.y * b.x,
     )
+
+def reflect(in_vector, normal):
+    return in_vector - normal * 2 * dot(in_vector, normal)
+    
 
 @dataclass
 class Color:
