@@ -23,7 +23,14 @@ from raytracer.transformations import (
 )
 from raytracer.rays import Ray
 from raytracer.spheres import Sphere
-from raytracer.intersections import Intersection, intersect, intersections, hit
+from raytracer.intersections import (
+    Intersection,
+    intersect,
+    intersections,
+    hit,
+    Computations,
+    prepare_computations,
+)
 
 
 def test_an_intersection_encapsulates_t_and_object():
@@ -97,3 +104,33 @@ def test_intersecting_a_translated_sphere_with_a_ray():
     s.set_transform(translation(5, 0, 0))
     xs = intersect(s, r)
     assert len(xs) == 0
+
+def test_precomputing_the_state_of_an_intersection():
+    r = Ray(point(0, 0, -5), vector(0, 0, 1))
+    shape = Sphere()
+    i = Intersection(4, shape)
+    comps = prepare_computations(i, r)
+    assert comps.t == i.t
+    assert comps.object == i.object
+    assert comps.point == point(0, 0, -1)
+    assert comps.eyev == vector(0, 0, -1)
+    assert comps.normalv == vector(0, 0, -1)
+
+def test_the_hit_when_an_intersection_occurs_on_the_outside():
+    r = Ray(point(0,0, -5), vector(0, 0, 1))
+    shape = Sphere()
+    i = Intersection(4, shape)
+    comps = prepare_computations(i, r)
+    assert comps.inside == False
+
+def test_the_hit_when_an_intersection_occurs_on_the_inside():
+    r = Ray(point(0, 0, 0), vector(0, 0, 1))
+    shape = Sphere()
+    i = Intersection(1, shape)
+    comps = prepare_computations(i, r)
+    assert comps.point == point(0, 0, 1)
+    assert comps.eyev == vector(0, 0, -1)
+    assert comps.inside == True
+    # normal would have been (0, 0, 1), but is inverted!
+    assert comps.normalv == vector(0, 0, -1)
+    

@@ -1,5 +1,5 @@
 from math import pi, sqrt
-from typing import List, Optional
+from typing import List, Optional, Any
 from dataclasses import dataclass
 
 from raytracer.tuple import (
@@ -59,3 +59,31 @@ def hit(xs: List[Intersection]) -> Optional[Intersection]:
         return sorted_xs[0]
     else:
         return None
+
+@dataclass
+class Computations:
+    t: float
+    object: Any
+    point: tuple
+    eyev: tuple
+    normalv: tuple
+    inside: bool
+
+    def __init__(self, t, object, point, eyev, normalv, inside=None):
+        self.t = t
+        self.object = object
+        self.point = point
+        self.eyev = eyev
+        self.normalv = normalv
+        if dot(self.normalv, self.eyev) < 0:
+            self.inside = True
+            self.normalv = -self.normalv
+        else:
+            self.inside = False
+
+
+def prepare_computations(i: Intersection, r: Ray) -> Computations:
+    p = r.position(i.t)
+    eyev = -r.direction
+    normalv = i.object.normal_at(p)
+    return Computations(i.t, i.object, p, eyev, normalv)

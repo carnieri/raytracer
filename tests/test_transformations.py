@@ -19,6 +19,7 @@ from raytracer.transformations import (
     rotation_y,
     rotation_z,
     shearing,
+    view_transform
 )
 
 def test_multiplying_by_a_translation_matrix():
@@ -120,3 +121,37 @@ def test_chained_transformations_must_be_applied_in_reverse_order():
     C = translation(10, 5, 7)
     T = C @ B @ A
     assert T * p == point(15, 0, 7)
+
+def test_the_transformation_matrix_for_the_default_orientation():
+    from_p = point(0, 0, 0)
+    to_p = point(0, 0, -1)
+    up = vector(0, 1, 0)
+    t = view_transform(from_p, to_p, up)
+    assert t == I
+
+def test_a_view_transformation_matrix_looking_in_positive_z_direction():
+    from_p = point(0, 0, 0)
+    to_p = point(0, 0, 1)
+    up = vector(0, 1, 0)
+    t = view_transform(from_p, to_p, up)
+    assert t == scaling(-1, 1, -1)
+
+def test_the_view_transformation_moves_the_world():
+    from_p = point(0, 0, 8)
+    to_p = point(0, 0, 0)
+    up = vector(0, 1, 0)
+    t = view_transform(from_p, to_p, up)
+    assert t == translation(0, 0, -8)
+
+def test_an_arbitrary_view_transformation():
+    from_p = point(1, 3, 2)
+    to_p = point(4, -2, 8)
+    up = vector(1, 1, 0)
+    t = view_transform(from_p, to_p, up)
+    print(t)
+    assert t == Matrix(
+        [[-0.50709, 0.50709, 0.67612, -2.36643],
+         [0.76772, 0.60609, 0.12122, -2.82843],
+         [-0.35857, 0.59761, -0.71714, 0.0],
+         [0.0, 0.0, 0.0, 1.0]]
+    )

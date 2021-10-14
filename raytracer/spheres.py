@@ -42,4 +42,9 @@ class Sphere:
         world_normal = self.transform.inverse().transpose() * object_normal
         world_normal.w = 0
         return normalize(world_normal)
-        
+
+    def __eq__(self, other):
+        return (
+            self.transform == other.transform and 
+            self.material == other.material
+        )
