@@ -23,7 +23,7 @@ class Material:
 
 black = Color(0, 0, 0)
 
-def lighting(material, light: PointLight, point, eyev, normalv):
+def lighting(material, light: PointLight, point, eyev, normalv, in_shadow):
     # combine the surface color with the light's color/intensity
     effective_color = material.color * light.intensity
 
@@ -32,6 +32,8 @@ def lighting(material, light: PointLight, point, eyev, normalv):
 
     # compute the ambient contribution
     ambient = effective_color * material.ambient
+    if in_shadow:
+        return ambient
 
     # light_dot_normal: represents the cosine of the angle between the
     # light vector and the normal vector. A negative number means the
@@ -57,4 +59,5 @@ def lighting(material, light: PointLight, point, eyev, normalv):
             specular = light.intensity * material.specular * factor
 
     # Add the three contributions together to get the final shading
+
     return ambient + diffuse + specular

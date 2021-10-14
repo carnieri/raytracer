@@ -12,7 +12,7 @@ from raytracer.tuple import (
     cross,
     Color,
 )
-from raytracer.util import equal
+from raytracer.util import equal, EPSILON
 from raytracer.matrices import Matrix, I
 from raytracer.transformations import (
     translation,
@@ -86,4 +86,6 @@ def prepare_computations(i: Intersection, r: Ray) -> Computations:
     p = r.position(i.t)
     eyev = -r.direction
     normalv = i.object.normal_at(p)
-    return Computations(i.t, i.object, p, eyev, normalv)
+    comps = Computations(i.t, i.object, p, eyev, normalv)
+    comps.over_point = comps.point + comps.normalv * EPSILON
+    return comps

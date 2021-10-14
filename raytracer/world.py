@@ -40,6 +40,18 @@ class World:
         all_intersections.sort(key=lambda x: x.t)
         return all_intersections
 
+    def is_shadowed(self, p):
+        v = self.light.position - p
+        distance = magnitude(v)
+        direction = normalize(v)
+        r = Ray(p, direction)
+        xs = self.intersect_world(r)
+        h = hit(xs)
+        if h is not None and h.t < distance:
+            return True
+        else:
+            return False    
+
     
 def default_world():
     light = PointLight(point(-10, 10, -10), Color(1, 1, 1))
@@ -56,10 +68,12 @@ def default_world():
     return w
 
 def shade_hit(world, comps):
+    shadowed = world.is_shadowed(comps.over_point)
     return lighting(
         comps.object.material,
         world.light,
-        comps.point, comps.eyev, comps.normalv
+        comps.point, comps.eyev, comps.normalv,
+        shadowed
     )
 
 def color_at(world, ray):

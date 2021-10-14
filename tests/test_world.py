@@ -94,3 +94,38 @@ def test_the_color_with_an_intersectino_behind_the_ray():
     r = Ray(point(0, 0, 0.75), vector(0, 0, -1))
     c = color_at(w, r)
     assert c == inner.material.color
+
+def test_there_is_no_shadow_when_nothing_is_collinear_with_point_and_light():
+    w = default_world()
+    p = point(0, 10, 0)
+    assert w.is_shadowed(p) == False
+
+def test_the_shadow_when_an_object_is_between_the_point_and_the_light():
+    w = default_world()
+    p = point(10, -10, 10)
+    assert w.is_shadowed(p)
+
+def test_there_is_no_shadow_when_an_object_is_behind_the_light():
+    w = default_world()
+    p = point(-20, 20, -20)
+    assert w.is_shadowed(p) == False
+
+def test_there_is_no_shadow_when_an_object_is_behind_the_point():
+    w = default_world()
+    p = point(-2, 2, -2)
+    assert w.is_shadowed(p) == False
+
+def test_shade_hit_is_given_an_intersection_in_shadow():
+    w = World()
+    w.light = PointLight(point(0, 0, -10), Color(1, 1, 1))
+    s1 = Sphere()
+    w.add_object(s1)
+    s2 = Sphere()
+    s2.set_transform(translation(0, 0, 10))
+    w.add_object(s2)
+    r = Ray(point(0, 0, 5), vector(0, 0, 1))
+    i = Intersection(4, s2)
+    comps = prepare_computations(i, r)
+    c = shade_hit(w, comps)
+    # only the ambient color of the second sphere should be returned
+    assert c == Color(0.1, 0.1, 0.1)

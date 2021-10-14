@@ -61,7 +61,8 @@ def render(shape):
                 hitpoint = r.position(myhit.t)
                 normal = myhit.object.normal_at(hitpoint)
                 eye = -r.direction
-                color = lighting(myhit.object.material, light, hitpoint, eye, normal)
+                in_shadow = False
+                color = lighting(myhit.object.material, light, hitpoint, eye, normal, in_shadow)
                 c.write_pixel(x, y, color)
     return c
 

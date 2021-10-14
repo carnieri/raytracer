@@ -11,7 +11,7 @@ from raytracer.tuple import (
     cross,
     Color,
 )
-from raytracer.util import equal
+from raytracer.util import equal, EPSILON
 from raytracer.matrices import Matrix, I
 from raytracer.transformations import (
     translation,
@@ -133,4 +133,13 @@ def test_the_hit_when_an_intersection_occurs_on_the_inside():
     assert comps.inside == True
     # normal would have been (0, 0, 1), but is inverted!
     assert comps.normalv == vector(0, 0, -1)
+
+def test_the_hit_should_offset_the_point():
+    r = Ray(point(0, 0, -5), vector(0, 0, 1))
+    shape = Sphere()
+    shape.set_transform(translation(0, 0, 1))
+    i = Intersection(5, shape)
+    comps = prepare_computations(i, r)
+    assert comps.over_point.z < -EPSILON/2
+    assert comps.point.z > comps.over_point.z
     
