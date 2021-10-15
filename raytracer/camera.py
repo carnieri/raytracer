@@ -71,9 +71,11 @@ class Camera:
         direction = normalize(pixel - origin)
         return Ray(origin, direction)
 
-    def render(self, world):
+    def render(self, world, verbose=False):
         image = canvas(self.hsize, self.vsize)
         for y in range(self.vsize):
+            if verbose and y % 10 == 0:
+                print(f'rendering line {y+1} of {self.vsize}')
             for x in range(self.hsize):
                 ray = self.ray_for_pixel(x, y)
                 color = color_at(world, ray)
