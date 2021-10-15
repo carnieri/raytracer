@@ -1,4 +1,4 @@
-from math import pi, sqrt
+from math import pi, sqrt, sin, cos
 
 from raytracer.tuple import (
     tuple,
@@ -90,8 +90,18 @@ def render():
     world.add_object(right)
     world.add_object(left)
 
+    for i in range(30):
+        s = Sphere()
+        s.transform = translation(-2.0, cos(i)+0.5, i) @ scaling(0.33, 0.33, 0.33)
+        s.material = Material()
+        s.material.color = Color(0.7, 0.1, 0.1)
+        s.material.diffuse = 0.7
+        s.material.specular = 0.3
+        world.add_object(s)
+
     # create camera
-    camera = Camera(400, 200, pi/3)
+    scale = 4
+    camera = Camera(100*scale, 50*scale, pi/3)
     camera.transform = view_transform(
         point(0, 1.5, -5),
         point(0, 1, 0),
@@ -99,7 +109,7 @@ def render():
     )
 
     # render
-    image = camera.render(world)
+    image = camera.render(world, verbose=True)
     return image
 
 render().save("chapter9_planes.ppm")
