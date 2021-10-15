@@ -23,7 +23,7 @@ from raytracer.transformations import (
 )
 from raytracer.rays import Ray
 from raytracer.spheres import Sphere
-from raytracer.intersections import Intersection, intersect, intersections, hit
+from raytracer.intersections import Intersection, intersections, hit
 
 
 def render(shape):
@@ -50,7 +50,7 @@ def render(shape):
             # describe the point on the wall that the ray will target
             position = point(world_x, world_y, wall_z)
             r = Ray(ray_origin, normalize(position - ray_origin))
-            xs = intersect(shape, r)
+            xs = shape.intersect(r)
             if hit(xs) is not None:
                 c.write_pixel(x, y, color)
     return c

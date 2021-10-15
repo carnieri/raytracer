@@ -25,7 +25,6 @@ from raytracer.rays import Ray
 from raytracer.spheres import Sphere
 from raytracer.intersections import (
     Intersection,
-    intersect,
     intersections,
     hit,
     Computations,
@@ -50,7 +49,7 @@ def test_aggregating_intersections():
 def test_intersect_sets_the_object_on_the_intersection():
     r = Ray(point(0, 0, -5), vector(0, 0, 1))
     s = Sphere()
-    xs = intersect(s, r)
+    xs = s.intersect(r)
     assert len(xs) == 2
     assert xs[0].object == s
     assert xs[1].object == s
@@ -93,7 +92,7 @@ def test_intersecting_a_scaled_sphere_with_a_ray():
     r = Ray(point(0, 0, -5), vector(0, 0, 1))
     s = Sphere()
     s.set_transform(scaling(2, 2, 2))
-    xs = intersect(s, r)
+    xs = s.intersect(r)
     assert len(xs) == 2
     assert equal(xs[0].t, 3)
     assert equal(xs[1].t, 7)
@@ -102,7 +101,7 @@ def test_intersecting_a_translated_sphere_with_a_ray():
     r = Ray(point(0, 0, -5), vector(0, 0, 1))
     s = Sphere()
     s.set_transform(translation(5, 0, 0))
-    xs = intersect(s, r)
+    xs = s.intersect(r)
     assert len(xs) == 0
 
 def test_precomputing_the_state_of_an_intersection():

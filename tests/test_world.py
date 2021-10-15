@@ -11,7 +11,7 @@ from raytracer.tuple import (
 )
 from raytracer.rays import Ray
 from raytracer.spheres import Sphere
-from raytracer.intersections import Intersection, intersect, intersections, hit, prepare_computations
+from raytracer.intersections import Intersection, intersections, hit, prepare_computations
 from raytracer.lights import PointLight
 from raytracer.materials import Material, lighting
 from raytracer.transformations import (

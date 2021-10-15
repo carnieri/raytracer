@@ -24,7 +24,7 @@ from raytracer.transformations import (
 )
 from raytracer.rays import Ray
 from raytracer.spheres import Sphere
-from raytracer.intersections import Intersection, intersections, hit
+from raytracer.planes import Plane
 from raytracer.lights import PointLight
 from raytracer.materials import Material, lighting
 from raytracer.camera import Camera
@@ -32,24 +32,34 @@ from raytracer.world import World, default_world
 
 
 def render():
-    floor = Sphere()
-    floor.transform = scaling(10, 0.01, 10)
-    floor.material = Material()
-    floor.material.color = Color(1, 0.9, 0.9)
-    floor.material.specular = 0
+    floor = Plane()
+    # floor.transform = scaling(10, 0.01, 10)
+    # floor.material = Material()
+    # floor.material.color = Color(1, 0.9, 0.9)
+    # floor.material.specular = 0
 
-    left_wall = Sphere()
-    left_wall.transform = translation(0, 0, 5) @ rotation_y(-pi/4) @ rotation_x(pi/2) @ scaling(10, 0.01, 10)
-    left_wall.material = floor.material
+    ceiling = Plane()
+    ceiling.transform = translation(0, 15, 0)
+    ceiling.material = Material()
+    ceiling.material.color = Color(0.1, 0.1, 0.5)
+    ceiling.material.ambient = 0.9
+    ceiling.material.diffuse = 1
+    ceiling.material.specular = 0
 
-    right_wall = Sphere()
-    right_wall.transform = translation(0, 0, 5) @ rotation_y(pi/4) @ rotation_x(pi/2) @ scaling(10, 0.01, 10)
-    right_wall.material = floor.material
+    left_wall = Plane()
+    left_wall.transform = translation(0, 0, 5) @ rotation_y(-pi/4) @ rotation_x(pi/2)
+    left_wall.material = Material()
+    left_wall.material.color = Color(1.0, 0.2, 0.2)
+    left_wall.material.specular = 0
+    # right_wall = Sphere()
+    # right_wall.transform = translation(0, 0, 5) @ rotation_y(pi/4) @ rotation_x(pi/2) @ scaling(10, 0.01, 10)
+    # right_wall.material = floor.material
+
 
     # create objects that will be in the scene
     
     middle = Sphere()
-    middle.transform = translation(-0.5, 1, 0.5)
+    middle.transform = translation(-0.5, 0, 0.5)
     middle.material = Material()
     middle.material.color = Color(0.1, 1, 0.5)
     middle.material.diffuse = 0.7
@@ -73,8 +83,9 @@ def render():
     world = World()
     world.light = PointLight(point(-10, 10, -10), Color(1, 1, 1))
     world.add_object(floor)
-    world.add_object(left_wall)
-    world.add_object(right_wall)
+    world.add_object(ceiling)
+    # world.add_object(left_wall)
+    # world.add_object(right_wall)
     world.add_object(middle)
     world.add_object(right)
     world.add_object(left)
@@ -91,4 +102,4 @@ def render():
     image = camera.render(world)
     return image
 
-render().save("chapter8_shadows.ppm")
+render().save("chapter9_planes.ppm")

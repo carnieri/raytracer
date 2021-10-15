@@ -11,7 +11,7 @@ from raytracer.tuple import (
 )
 from raytracer.rays import Ray
 from raytracer.spheres import Sphere
-from raytracer.intersections import Intersection, intersect, intersections, hit, prepare_computations
+from raytracer.intersections import Intersection, intersections, hit, prepare_computations
 from raytracer.lights import PointLight
 from raytracer.materials import Material, lighting
 from raytracer.transformations import (
@@ -35,7 +35,7 @@ class World:
     def intersect_world(self, ray):
         all_intersections = []
         for obj in self.objects:
-            xs = intersect(obj, ray)
+            xs = obj.intersect(ray)
             all_intersections.extend(xs)
         all_intersections.sort(key=lambda x: x.t)
         return all_intersections

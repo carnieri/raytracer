@@ -23,7 +23,7 @@ from raytracer.transformations import (
 )
 from raytracer.rays import Ray
 from raytracer.spheres import Sphere
-from raytracer.intersections import Intersection, intersect, intersections, hit
+from raytracer.intersections import Intersection, intersections, hit
 from raytracer.lights import PointLight
 from raytracer.materials import Material, lighting
 
@@ -55,7 +55,7 @@ def render(shape):
             # describe the point on the wall that the ray will target
             position = point(world_x, world_y, wall_z)
             r = Ray(ray_origin, normalize(position - ray_origin))
-            xs = intersect(shape, r)
+            xs = shape.intersect(r)
             myhit = hit(xs)
             if myhit is not None:
                 hitpoint = r.position(myhit.t)
