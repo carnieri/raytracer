@@ -7,6 +7,7 @@ from raytracer.util import equal
 class Matrix:
     def __init__(self, data: List[List]):
         self.data = data
+        self.cached_inverse = None
 
     def __getitem__(self, key):
         r, c = key
@@ -72,8 +73,13 @@ class Matrix:
         else:
             raise Exception("case not implemented")
 
-    def transpose(self):
+    def clone(self):
         T = self.copy()
+        T.cached_inverse = None
+        return T
+
+    def transpose(self):
+        T = self.clone()
         for i in range(self.rows()):
             for j in range(self.cols()):
                 T[i,j] = self[j,i]
@@ -98,7 +104,7 @@ class Matrix:
         return self.rows(), self.cols()
 
     def submatrix(self, i, j):
-        S = self.copy()
+        S = self.clone()
         # for every row, delete column j
         for r in range(S.rows()):
             del S.data[r][j]
@@ -126,13 +132,17 @@ class Matrix:
             return True
 
     def inverse(self):
-        assert self.invertible()
+        if self.cached_inverse is not None:
+            return self.cached_inverse
+        # assert self.invertible()
         det = self.determinant()
-        M2 = self.copy()
+        assert det != 0
+        M2 = self.clone()
         for i in range(self.rows()):
             for j in range(self.cols()):
                 c = self.cofactor(i, j)
                 M2[j,i] = c / det
+        self.cached_inverse = M2
         return M2
 
 
