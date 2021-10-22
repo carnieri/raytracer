@@ -71,6 +71,7 @@ def shade_hit(world, comps):
     shadowed = world.is_shadowed(comps.over_point)
     return lighting(
         comps.object.material,
+        comps.object,
         world.light,
         comps.point, comps.eyev, comps.normalv,
         shadowed

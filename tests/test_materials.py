@@ -13,6 +13,7 @@ from raytracer.tuple import (
 )
 from raytracer.materials import Material, lighting
 from raytracer.lights import PointLight
+from raytracer.spheres import Sphere
 
 
 def test_the_default_material():
@@ -34,7 +35,8 @@ def test_lighting_with_the_eye_between_the_light_and_the_surface():
     normalv = vector(0, 0, -1)
     light = PointLight(point(0, 0, -10), Color(1, 1, 1))
     in_shadow = False
-    result = lighting(m, light, position, eyev, normalv, in_shadow)
+    object = Sphere()
+    result = lighting(m, object, light, position, eyev, normalv, in_shadow)
     assert result == Color(1.9, 1.9, 1.9)
 
 def test_lighting_with_the_eye_between_light_and_surface_eye_offset_45_degrees():
@@ -43,7 +45,8 @@ def test_lighting_with_the_eye_between_light_and_surface_eye_offset_45_degrees()
     normalv = vector(0, 0, -1)
     light = PointLight(point(0, 0, -10), Color(1, 1, 1))
     in_shadow = False
-    result = lighting(m, light, position, eyev, normalv, in_shadow)
+    object = Sphere()
+    result = lighting(m, object, light, position, eyev, normalv, in_shadow)
     assert result == Color(1.0, 1.0, 1.0)
 
 def test_lighting_with_eye_opposite_surface_light_offset_45_degrees():
@@ -52,7 +55,8 @@ def test_lighting_with_eye_opposite_surface_light_offset_45_degrees():
     normalv = vector(0, 0, -1)
     light = PointLight(point(0, 10, -10), Color(1, 1, 1))
     in_shadow = False
-    result = lighting(m, light, position, eyev, normalv, in_shadow)
+    object = Sphere()
+    result = lighting(m, object, light, position, eyev, normalv, in_shadow)
     assert result == Color(0.7364, 0.7364, 0.7364)
 
 def test_lighting_with_eye_in_the_path_of_the_reflection_vector():
@@ -61,7 +65,8 @@ def test_lighting_with_eye_in_the_path_of_the_reflection_vector():
     normalv = vector(0, 0, -1)
     light = PointLight(point(0, 10, -10), Color(1, 1, 1))
     in_shadow = False
-    result = lighting(m, light, position, eyev, normalv, in_shadow)
+    object = Sphere()
+    result = lighting(m, object, light, position, eyev, normalv, in_shadow)
     assert result == Color(1.6364, 1.6364, 1.6364)
 
 def test_lighting_with_the_light_behind_the_surface():
@@ -70,7 +75,8 @@ def test_lighting_with_the_light_behind_the_surface():
     normalv = vector(0, 0, -1)
     light = PointLight(point(0, 0, 10), Color(1, 1, 1))
     in_shadow = False
-    result = lighting(m, light, position, eyev, normalv, in_shadow)
+    object = Sphere()
+    result = lighting(m, object, light, position, eyev, normalv, in_shadow)
     assert result == Color(0.1, 0.1, 0.1)
 
 def test_lighting_with_the_surface_in_shadow():
@@ -79,6 +85,7 @@ def test_lighting_with_the_surface_in_shadow():
     normalv = vector(0, 0, -1)
     light = PointLight(point(0, 0, -10), Color(1, 1, 1))
     in_shadow = True
-    result = lighting(m, light, position, eyev, normalv, in_shadow)
+    object = Sphere()
+    result = lighting(m, object, light, position, eyev, normalv, in_shadow)
     assert result == Color(0.1, 0.1, 0.1)
     

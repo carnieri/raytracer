@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from typing import Optional
 
 from raytracer.tuple import (
     tuple,
@@ -12,6 +13,7 @@ from raytracer.tuple import (
     Color,
 )
 from raytracer.lights import PointLight
+from raytracer.patterns import Pattern
 
 @dataclass
 class Material:
@@ -20,12 +22,18 @@ class Material:
     diffuse: float = 0.9
     specular: float = 0.9
     shininess: float = 200.0
+    pattern: Optional[Pattern] = None
+
 
 black = Color(0, 0, 0)
 
-def lighting(material, light: PointLight, point, eyev, normalv, in_shadow):
+def lighting(material, object, light: PointLight, point, eyev, normalv, in_shadow):
+    if material.pattern is not None:
+        color = material.pattern.stripe_at_object(object, point)
+    else:
+        color = material.color
     # combine the surface color with the light's color/intensity
-    effective_color = material.color * light.intensity
+    effective_color = color * light.intensity
 
     # find the direction to the light source
     lightv = normalize(light.position - point)
