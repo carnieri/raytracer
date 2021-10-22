@@ -25,8 +25,8 @@ from raytracer.transformations import (
 from raytracer.util import equal 
 from raytracer.world import World, default_world, shade_hit, color_at
 from raytracer.matrices import Matrix, I
-from raytracer.patterns import MyTestPattern
-from raytracer.stripe_pattern import StripePattern
+from raytracer.patterns import DummyPattern, StripePattern, GradientPattern, RingPattern, CheckersPattern
+
 
 black = Color(0, 0, 0)
 white = Color(1, 1, 1)
@@ -95,24 +95,24 @@ def test_stripes_with_both_an_object_and_a_pattern_transformation():
     assert c == white
 
 def test_the_default_pattern_transformation():
-    pattern = MyTestPattern()
+    pattern = DummyPattern()
     assert pattern.transform == I
 
 def test_assigning_a_transformation():
-    pattern = MyTestPattern()
+    pattern = DummyPattern()
     pattern.set_pattern_transform(translation(1, 2, 3))
     assert pattern.transform == translation(1, 2, 3)
 
 def test_a_pattern_with_an_object_transformation():
     shape = Sphere()
     shape.set_transform(scaling(2, 2, 2))
-    pattern = MyTestPattern()
+    pattern = DummyPattern()
     c = pattern.pattern_at_shape(shape, point(2, 3, 4))
     assert c == Color(1, 1.5, 2)
 
 def test_a_pattern_with_a_pattern_transformation():
     shape = Sphere()
-    pattern = MyTestPattern()
+    pattern = DummyPattern()
     pattern.set_pattern_transform(scaling(2, 2, 2))
     c = pattern.pattern_at_shape(shape, point(2, 3, 4))
     assert c == Color(1, 1.5, 2)
@@ -120,7 +120,40 @@ def test_a_pattern_with_a_pattern_transformation():
 def test_a_pattern_with_both_an_object_and_a_pattern_transformation():
     shape = Sphere()
     shape.set_transform(scaling(2, 2, 2))
-    pattern = MyTestPattern()
+    pattern = DummyPattern()
     pattern.set_pattern_transform(translation(0.5, 1, 1.5))
     c = pattern.pattern_at_shape(shape, point(2.5, 3, 3.5))
     assert c == Color(0.75, 0.5, 0.25)
+
+def test_a_gradient_linearly_interpolates_between_colors():
+    pattern = GradientPattern(white, black)
+    pattern.pattern_at(point(0, 0, 0)) == white
+    assert pattern.pattern_at(point(0.25, 0, 0)) == Color(0.75, 0.75, 0.75)
+    assert pattern.pattern_at(point(0.5, 0, 0)) == Color(0.5, 0.5, 0.5)
+    assert pattern.pattern_at(point(0.75, 0, 0)) == Color(0.25, 0.25, 0.25)
+
+def test_a_ring_should_extend_in_both_x_and_z():
+    pattern = RingPattern(white, black)
+    assert pattern.pattern_at(point(0, 0, 0)) == white
+    assert pattern.pattern_at(point(1, 0, 0)) == black
+    assert pattern.pattern_at(point(0, 0, 1)) == black
+    # 0.708 = just slightly more than sqrt(2)/2
+    assert pattern.pattern_at(point(0.708, 0, 0.708)) == black
+
+def test_checkers_should_repeat_in_x():
+    pattern = CheckersPattern(white, black)
+    assert pattern.pattern_at(point(0, 0, 0)) == white
+    assert pattern.pattern_at(point(0.99, 0, 0)) == white
+    assert pattern.pattern_at(point(1.01, 0, 0)) == black
+
+def test_checkers_should_repeat_in_y():
+    pattern = CheckersPattern(white, black)
+    assert pattern.pattern_at(point(0, 0, 0)) == white
+    assert pattern.pattern_at(point(0, 0.99, 0)) == white
+    assert pattern.pattern_at(point(0, 1.01, 0)) == black
+
+def test_checkers_should_repeat_in_z():
+    pattern = CheckersPattern(white, black)
+    assert pattern.pattern_at(point(0, 0, 0)) == white
+    assert pattern.pattern_at(point(0, 0, 0.99)) == white
+    assert pattern.pattern_at(point(0, 0, 1.01)) == black

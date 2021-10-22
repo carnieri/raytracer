@@ -73,7 +73,7 @@ def shade_hit(world, comps):
         comps.object.material,
         comps.object,
         world.light,
-        comps.point, comps.eyev, comps.normalv,
+        comps.over_point, comps.eyev, comps.normalv,
         shadowed
     )
 
