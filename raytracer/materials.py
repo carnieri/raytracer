@@ -29,7 +29,7 @@ black = Color(0, 0, 0)
 
 def lighting(material, object, light: PointLight, point, eyev, normalv, in_shadow):
     if material.pattern is not None:
-        color = material.pattern.stripe_at_object(object, point)
+        color = material.pattern.pattern_at_shape(object, point)
     else:
         color = material.color
     # combine the surface color with the light's color/intensity
