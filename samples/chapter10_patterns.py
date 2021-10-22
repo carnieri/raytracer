@@ -74,6 +74,8 @@ def render():
     middle.material.color = Color(0.1, 1, 0.5)
     middle.material.diffuse = 0.7
     middle.material.specular = 0.3
+    middle.material.pattern = GradientPattern(Color(1,0,0), Color(0.2,0,0.5))
+    middle.material.pattern.set_pattern_transform(scaling(1, 1, 1))
     # middle.material.pattern = RingPattern(red, cyan)
     # middle.material.pattern = CheckersPattern(red, green)
     # middle.material.pattern.set_pattern_transform(scaling(0.2, 0.2, 0.2))
@@ -87,6 +89,8 @@ def render():
     right.material.specular = 0.3
     # right.material.pattern = GradientPattern(Color(1,0,0), Color(0.2,0,0.5))
     # right.material.pattern.set_pattern_transform(scaling(2, 2, 2))
+    right.material.pattern = StripePattern(red, green)
+    right.material.pattern.set_pattern_transform(rotation_y(pi/4) @ scaling(0.2, 0.2, 0.2))
 
     left = Sphere()
     left.transform = translation(-1.5, 0.33, -0.75) @ scaling(0.33, 0.33, 0.33)
