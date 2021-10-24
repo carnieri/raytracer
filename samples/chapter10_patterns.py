@@ -20,7 +20,7 @@ from raytracer.transformations import (
     rotation_y,
     rotation_z,
     shearing,
-    view_transform
+    view_transform,
 )
 from raytracer.rays import Ray
 from raytracer.spheres import Sphere
@@ -29,7 +29,12 @@ from raytracer.lights import PointLight
 from raytracer.materials import Material, lighting
 from raytracer.camera import Camera
 from raytracer.world import World, default_world
-from raytracer.patterns import CheckersPattern, GradientPattern, StripePattern, RingPattern
+from raytracer.patterns import (
+    CheckersPattern,
+    GradientPattern,
+    StripePattern,
+    RingPattern,
+)
 
 
 white = Color(1, 1, 1)
@@ -39,10 +44,11 @@ green = Color(0, 1, 0)
 blue = Color(0, 0, 1)
 cyan = Color(0, 1, 1)
 
+
 def render():
     floor = Plane()
     floor.material.pattern = CheckersPattern(white, black)
-    # floor.material.pattern = RingPattern(red, green)
+    # floor.material.pattern = GradientPattern(red, white)
     # floor.transform = scaling(10, 0.01, 10)
     # floor.material = Material()
     # floor.material.color = Color(1, 0.9, 0.9)
@@ -57,7 +63,9 @@ def render():
     ceiling.material.specular = 0
 
     left_wall = Plane()
-    left_wall.transform = translation(0, 0, 5) @ rotation_y(-pi/4) @ rotation_x(pi/2)
+    left_wall.transform = (
+        translation(0, 0, 5) @ rotation_y(-pi / 4) @ rotation_x(pi / 2)
+    )
     left_wall.material = Material()
     left_wall.material.color = Color(1.0, 0.2, 0.2)
     left_wall.material.specular = 0
@@ -65,21 +73,21 @@ def render():
     # right_wall.transform = translation(0, 0, 5) @ rotation_y(pi/4) @ rotation_x(pi/2) @ scaling(10, 0.01, 10)
     # right_wall.material = floor.material
 
-
     # create objects that will be in the scene
-    
+
     middle = Sphere()
     middle.transform = translation(-0.5, 1, 0.5)
     middle.material = Material()
     middle.material.color = Color(0.1, 1, 0.5)
     middle.material.diffuse = 0.7
     middle.material.specular = 0.3
-    middle.material.pattern = GradientPattern(Color(1,0,0), Color(0.2,0,0.5))
-    middle.material.pattern.set_pattern_transform(scaling(1, 1, 1))
+    middle.material.pattern = GradientPattern(red, green)
+    middle.material.pattern.set_pattern_transform(
+        translation(-1, 1, 1) @ scaling(2, 2, 2)
+    )
     # middle.material.pattern = RingPattern(red, cyan)
     # middle.material.pattern = CheckersPattern(red, green)
     # middle.material.pattern.set_pattern_transform(scaling(0.2, 0.2, 0.2))
-
 
     right = Sphere()
     right.transform = translation(1.5, 0.5, -0.5) @ scaling(0.5, 0.5, 0.5)
@@ -90,7 +98,9 @@ def render():
     # right.material.pattern = GradientPattern(Color(1,0,0), Color(0.2,0,0.5))
     # right.material.pattern.set_pattern_transform(scaling(2, 2, 2))
     right.material.pattern = StripePattern(red, green)
-    right.material.pattern.set_pattern_transform(rotation_y(pi/4) @ scaling(0.2, 0.2, 0.2))
+    right.material.pattern.set_pattern_transform(
+        rotation_y(pi / 4) @ scaling(0.2, 0.2, 0.2)
+    )
 
     left = Sphere()
     left.transform = translation(-1.5, 0.33, -0.75) @ scaling(0.33, 0.33, 0.33)
@@ -121,20 +131,19 @@ def render():
 
     # create camera
     scale = 4
-    camera = Camera(100*scale, 50*scale, pi/3)
+    camera = Camera(100 * scale, 50 * scale, pi / 3)
     # camera.transform = view_transform(
     #     point(0, 1.5, -5),
     #     point(0, 1, 0),
     #     vector(0, 1, 0)
     # )
     camera.transform = view_transform(
-        point(1.5, 1.5, -5),
-        point(0, 1, 0),
-        vector(0, 1, 0)
+        point(1.5, 1.5, -5), point(0, 1, 0), vector(0, 1, 0)
     )
 
     # render
     image = camera.render(world, verbose=True)
     return image
+
 
 render().save("chapter10_patterns.ppm")
