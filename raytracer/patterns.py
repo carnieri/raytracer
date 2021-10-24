@@ -46,7 +46,7 @@ class GradientPattern(Pattern):
     def pattern_at(self, point: tuple) -> Color:
         distance = self.b - self.a
         fraction = point.x - floor(point.x)
-        return self.a + distance * fraction
+        return self.a + (distance * fraction)
 
 
 @dataclass

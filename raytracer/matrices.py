@@ -8,6 +8,7 @@ class Matrix:
     def __init__(self, data: List[List]):
         self.data = data
         self.cached_inverse = None
+        self.cached_transpose = None
 
     def __getitem__(self, key):
         r, c = key
@@ -31,9 +32,9 @@ class Matrix:
         ret = True
         for i in range(self.rows()):
             for j in range(self.cols()):
-                ret = ret and (equal(self[i,j], other[i,j]))
+                ret = ret and (equal(self[i, j], other[i, j]))
         return ret
-    
+
     def __str__(self):
         lines = []
         for row in self.data:
@@ -43,7 +44,9 @@ class Matrix:
 
     def copy(self):
         """Return a copy of the matrix."""
-        new_data = [[self[r,c] for c in range(self.cols())] for r in range(self.rows())]
+        new_data = [
+            [self[r, c] for c in range(self.cols())] for r in range(self.rows())
+        ]
         M = Matrix(new_data)
         return M
 
@@ -51,22 +54,22 @@ class Matrix:
         A = self
         B = other
         assert A.cols() == B.rows()
-        M = A.copy()    # to get a new matrix with correct shape
+        M = A.copy()  # to get a new matrix with correct shape
         for i in range(M.rows()):
             for j in range(M.cols()):
-                M[i,j] = 0
+                M[i, j] = 0
                 for k in range(A.cols()):
-                    M[i,j] += A[i,k] * B[k,j]
+                    M[i, j] += A[i, k] * B[k, j]
         return M
 
     def __mul__(self, other):
         if isinstance(other, tuple):
-            assert self.cols() == 4 # tuples always have length 4
+            assert self.cols() == 4  # tuples always have length 4
             tuple_vals = other.to_list()
             result_lst = [0 for r in range(self.cols())]
             for i in range(self.rows()):
                 for j in range(self.cols()):
-                    result_lst[i] += self[i,j] * tuple_vals[j]
+                    result_lst[i] += self[i, j] * tuple_vals[j]
             return tuple(*result_lst)
         elif isinstance(other, Matrix):
             return self @ other
@@ -79,25 +82,28 @@ class Matrix:
         return T
 
     def transpose(self):
+        if self.cached_transpose is not None:
+            return self.cached_transpose
         T = self.clone()
         for i in range(self.rows()):
             for j in range(self.cols()):
-                T[i,j] = self[j,i]
+                T[i, j] = self[j, i]
+        self.cached_transpose = T
         return T
 
     def determinant(self):
         # determinant is only defined for square matrices
         assert self.rows() == self.cols()
         if self.rows() == 2:
-            a,b = self[0,0], self[0,1]
-            c,d = self[1,0], self[1,1]
-            return a*d - b*c
+            a, b = self[0, 0], self[0, 1]
+            c, d = self[1, 0], self[1, 1]
+            return a * d - b * c
         else:
             # we arbitrarily pick the first row, but any row would do
             i = 0
             det = 0
             for j in range(self.cols()):
-                det += self[i,j] * self.cofactor(i,j)
+                det += self[i, j] * self.cofactor(i, j)
             return det
 
     def size(self):
@@ -121,7 +127,7 @@ class Matrix:
             sign = 1
         else:
             sign = -1
-        return self.minor(i,j) * sign
+        return self.minor(i, j) * sign
 
     def invertible(self):
         det = self.determinant()
@@ -141,7 +147,7 @@ class Matrix:
         for i in range(self.rows()):
             for j in range(self.cols()):
                 c = self.cofactor(i, j)
-                M2[j,i] = c / det
+                M2[j, i] = c / det
         self.cached_inverse = M2
         return M2
 
@@ -150,7 +156,8 @@ def identity(size):
     data = [[0 for col in range(size)] for row in range(size)]
     M = Matrix(data)
     for i in range(size):
-        M[i,i] = 1
+        M[i, i] = 1
     return M
+
 
 I = identity(4)
